@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Board</title>
+    <link rel="stylesheet" href="../public/css/task.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #d81313;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+            position: fixed;
+            width: 100%;
+            z-index: 1000; 
+
+        }
+
+        .topbar button {
+            background-color:  #4a6d92 ;
+            color:white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .topbar button:hover {
+            background-color: #004085;
+        }
+        .topbar h1{
+            color: #333;
+        }
+
+        .board {
+            display: flex;
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .column {
+            background-color: white;
+            border-radius: 5px;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .column h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .ticket {
+            background-color: #f8f9fa;
+            border-left: 5px solid #007bff;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .ticket:hover {
+            background-color: #e2e6ea;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+        }
+
+        .modal-header button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .modal-body input,
+        .modal-body textarea,
+        .modal-body select {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .modal-footer {
+            text-align: right;
+        }
+
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .save-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <%- include('sidebar') %>
+
+    <div class="topbar">
+        <h1>Ticket</h1>
+        <button id="openAddTaskModalButton" >Ajouter un Ticket</button>
+    </div>
+    <div class="board">
+        <div class="column">
+            <h2>À Faire</h2>
+            <div class="ticket" data-title="Ticket 1" data-description="Description rapide..." data-status="À Faire" data-members="Alice:alice@example.com, Bob:bob@example.com">
+                <h3>Ticket 1</h3>
+                <p>Description </p>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>En Cours</h2>
+            <div class="ticket" data-title="Ticket 2" data-description="En cours de traitement..." data-status="En Cours" data-members="Charlie:charlie@example.com">
+                <h3>Ticket 2</h3>
+                <p>description 2</p>
+            </div>
+        </div>
+
+        <div class="column">
+            <h2>Terminé</h2>
+            <div class="ticket" data-title="Ticket 3" data-description="Tâche terminée." data-status="Terminé" data-members="Diana:diana@example.com, Eve:eve@example.com">
+                <h3>Ticket 3</h3>
+                <p>description 3.</p>
+            </div>
+        </div>
+    </div>
+
+            <!-- addtask -->
+    <div class="modal" id="addTaskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Ajouter un Ticket</h3>
+                <button id="closeAddTaskModalButton">&times;</button>
+            </div>
+            <form id="addTadkForm" action="/task/create" method="POST">
+                <div class="form-group">
+                    <div class="modal-body">
+                        <label for="newTaskTitle">Titre</label>
+                        <input type="text" id="newTaskTitle">
+        
+                        <label for="newTaskDescription">Description</label>
+                        <textarea id="newTaskDescription"></textarea>
+        
+                        <label for="newTaskStatus">Statut</label>
+                        <select id="newTaskStatus">
+                            <option value="À Faire">À Faire</option>
+                            <option value="En Cours">En Cours</option>
+                            <option value="Terminé">Terminé</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="cancel-btn" id="cancelAddTaskButton">Annuler</button>
+                        <button class="save-btn" id="saveTaskButton" type="submit">Ajouter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Détails du Ticket</h3>
+                <button id="closeModalButton">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label for="taskTitle">Titre</label>
+                <input type="text" id="taskTitle" readonly>
+
+                <label for="taskDescription">Description</label>
+                <textarea id="taskDescription" readonly></textarea>
+
+                <label for="taskStatus">Statut</label>
+                <select id="taskStatus">
+                    <option value="À Faire">À Faire</option>
+                    <option value="En Cours">En Cours</option>
+                    <option value="Terminé">Terminé</option>
+                </select>
+
+                <label>Membres assignés</label>
+                <ul id="taskMembers"></ul>
+
+                <label for="taskComment">Commentaire</label>
+                <textarea id="taskComment" placeholder="Ajoutez votre commentaire ici..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancelButton">Fermer</button>
+                <button class="save-btn">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Task Modal
+        const addTaskModal = document.getElementById('addTaskModal');
+        const openAddTaskModalButton = document.getElementById('openAddTaskModalButton');
+        const closeAddTaskModalButton = document.getElementById('closeAddTaskModalButton');
+        const cancelAddTaskButton = document.getElementById('cancelAddTaskButton');
+
+        // Open Add Task Modal
+        openAddTaskModalButton.addEventListener('click', () => {
+            addTaskModal.style.display = 'flex';
+        });
+
+        // Close Add Task Modal
+        [closeAddTaskModalButton, cancelAddTaskButton].forEach(button => {
+            button.addEventListener('click', () => {
+                addTaskModal.style.display = 'none';
+            });
+        });
+
+        // Show menu on ticket
+        document.querySelectorAll('.ticket').forEach(ticket => {
+            const menu = ticket.querySelector('.menu');
+            const optionsButton = ticket.querySelector('.options');
+
+            optionsButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+            });
+
+            document.addEventListener('click', () => {
+                menu.style.display = 'none';
+            });
+        });
+
+        // Add ticket
+        const saveTaskButton = document.getElementById('saveTaskButton');
+        saveTaskButton.addEventListener('click', () => {
+            const title = document.getElementById('newTaskTitle').value;
+            const description = document.getElementById('newTaskDescription').value;
+            const status = document.getElementById('newTaskStatus').value;
+
+            const column = document.querySelector(`.column h2:contains(${status})`).parentElement;
+            const ticket = document.createElement('div');
+            ticket.className = 'ticket';
+            ticket.innerHTML = `<h3>${title}</h3><p>${description}</p>`;
+            column.appendChild(ticket);
+
+            addTaskModal.style.display = 'none';
+        });
+    </script>
+
+    <script>
+        const taskModal = document.getElementById('taskModal');
+        const closeModalButton = document.getElementById('closeModalButton');
+        const cancelButton = document.getElementById('cancelButton');
+
+        document.querySelectorAll('.ticket').forEach(ticket => {
+            ticket.addEventListener('click', () => {
+                const title = ticket.dataset.title;
+                const description = ticket.dataset.description;
+                const status = ticket.dataset.status;
+                const members = ticket.dataset.members.split(', ');
+
+                document.getElementById('taskTitle').value = title;
+                document.getElementById('taskDescription').value = description;
+                document.getElementById('taskStatus').value = status;
+
+                const membersList = document.getElementById('taskMembers');
+                membersList.innerHTML = '';
+                members.forEach(member => {
+                    const [name, email] = member.split(':');
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${name} (${email})`;
+                    membersList.appendChild(listItem);
+                });
+
+                taskModal.style.display = 'flex';
+            });
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            taskModal.style.display = 'none';
+        });
+
+        cancelButton.addEventListener('click', () => {
+            taskModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === taskModal) {
+                taskModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
+
+

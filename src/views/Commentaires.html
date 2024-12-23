@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commentaires</title>
+  <link rel="stylesheet" href="../public/css/commentaire.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Commentaires pour le ticket #12345</h1>
+    </header>
+    <main>
+      <!-- Formulaire pour ajouter un commentaire -->
+      <section class="add-comment">
+        <h2>Ajouter un commentaire</h2>
+        <form action="/submit-comment" method="POST">
+          <textarea name="comment" id="comment" placeholder="Écrivez votre commentaire ici..." required></textarea>
+          <button type="submit">Ajouter</button>
+        </form>
+      </section>
+
+      <!-- Liste des commentaires -->
+      <section class="comment-list">
+        <h2>Commentaires</h2>
+        <div class="comment">
+          <p class="author">Posté par <strong>Utilisateur1</strong> le 2024-12-22</p>
+          <p class="content">Ceci est un exemple de commentaire.</p>
+          <!-- Boutons affichés uniquement pour l'auteur -->
+          <div class="actions">
+            <button class="edit">Modifier</button>
+            <button class="delete">Supprimer</button>
+          </div>
+        </div>
+        <div class="comment">
+          <p class="author">Posté par <strong>Utilisateur2</strong> le 2024-12-21</p>
+          <p class="content">Un autre exemple de commentaire.</p>
+          <!-- Pas d'actions pour les autres utilisateurs -->
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

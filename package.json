@@ -1,0 +1,22 @@
+{
+  "name": "projectManagement",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "KantoSarobidy",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.4",
+    "nodemon": "^3.1.7",
+    "zod": "^3.24.0"
+  },
+  "scripts": {
+    "dev": "nodemon ./src/index.js"
+  }
+}

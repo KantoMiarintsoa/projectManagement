@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIste des projet</title>
+    <link rel="stylesheet" href="/css/listProject.css">
+    <link rel="stylesheet" href="/css/sidebar.ejs">
+    <script defer src="/js/listProject.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .modal {
+            display: none; 
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -40%); 
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            animation: slideIn 0.5s ease-out;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content .form-group {
+            margin-bottom: 15px;
+        }
+
+        .modal-content input,
+        .modal-content select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .modal-content .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            
+        }
+
+        .submit-btn {
+            background-color:  #4a6d92;
+            color: white;
+
+        }
+
+        .cancel-btn {
+            background-color: #941623;
+            color: white;   
+        }
+        @keyframes slideIn {
+    0% {
+        transform: translate(-50%, -60%);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -40%);
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <%- include('sidebar') %>
+
+    <div class="wrapper">
+        <div class="topbar-horizontal">
+            <div class="topbar-left">
+                <input type="text" id="filterByNameInput" placeholder="Filtrer par nom" oninput="filterByName()">
+                <button class="btn" onclick="toggleFilterByStatus()">Filtrer par status</button>
+                <!-- <button class="btn center-btn"><i class="fas fa-sort" onclick="sortByDate()"></i> Trier par Date</button> -->
+                <select id="sortByNameSelect" onchange="sortByName()">
+                    <option value="asc">Trier par nom (A-Z)</option>
+                    <option value="desc">Trier par nom (Z-A)</option>
+                </select>
+            </div>
+            <div class="topbar-right">
+                <button type="button" class="btn add-btn"><i class="fas fa-plus" ></i> Ajouter projet</button>
+            </div>
+        </div>
+    
+        <div class="container">
+            <div class="header">
+                <h2>Liste des Projets</h2>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Rechercher..." class="search-input">
+                </div>
+            </div>
+            
+            <!-- Table -->
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Projet</th>
+                        <th>Date de début</th>
+                        <th>Date de fin</th>
+                        <th>Avancement</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="projectTableBody">
+                    <% projects.forEach((project, index)=> { %>
+                        <tr>
+                            <td><%= project.title %></td>
+                            <td><%= project.dateStart %></td>
+                            <td><%= project.dueDate %></td>
+                            <td><%= project.progression %></td>
+                            <td><%= project.status %></td>
+                            <td>
+                                <div class="dropdown">
+                                    <span class="dots" onclick="toggleDropdown(event)">•••</span>
+                                    <div class="dropdown-menu">
+                                        <button class="edit-btn" onclick="openEditModal('<%= project._id %>', '<%= project.title %>', '<%= project.dateStart %>', '<%= project.dueDate %>')">Éditer</button>
+                                        <!-- <button class="delete-btn" onclick="confirmDelete('<%= project._id %>')">Supprimer</button> -->
+                                        <a href="project/delete/<%= project._id %>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="modal" id="editProjectModal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeEditModal()">&times;</span>
+                <h3>modification de donnee</h3>
+                <form  id="editProjectForm" method="POST" action="/project/edit/${id}">
+                    <div class="form-group">
+                        <label for="projectName">Nom du Projet :</label>
+                        <input type="text" id="projectName" placeholder="Entrez le nom du projet"  name="title" required>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="startDate">Date de Début :</label>
+                        <input type="date" id="startDate"  name="dateStart" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startDate">Date de Fin :</label>
+                        <input type="date" id="endDate"  name="dueDate" required>
+                    </div>
+                    
+                    <div class="buttons-container">
+                        <button type="submit" class="submit-btn">Enregistrer</button>
+                        <button type="button" class="cancel-btn" onclick="closeEditModal()">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Modal -->
+        <div class="modal" id="addProjectModal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+                <h3>Ajouter un Projet</h3>
+                <form id="addProjectForm" action="/project/add" method="POST">
+                    <div class="form-group">
+                        <label for="projectName">Nom du Projet :</label>
+                        <input type="text" id="projectName" placeholder="Entrez le nom du projet" required name="title">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="startDate">Date de Début :</label>
+                        <input type="date" id="startDate" required name="dateStart">
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="endDate">Date de fin :</label>
+                        <input type="date" id="endDate" required name="dueDate">
+                    </div>
+    
+                    <!-- <div class="form-group">
+                        <label for="status">Status :</label>
+                        <select id="status" disabled name="">
+                            <option value="en cours" selected>En cours</option>
+                        </select>   
+                    </div> -->
+    
+                    <div class="buttons-container">
+                        <button type="submit" class="submit-btn">Ajouter</button>
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById("addProjectModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("addProjectModal").style.display = "none";
+        }
+
+        document.querySelector(".add-btn").addEventListener("click", openModal);
+
+        document.querySelector(".close-btn").addEventListener("click", closeModal);
+
+        function toggleDropdown(event) {
+            const dropdownMenu = event.target.nextElementSibling;
+            dropdownMenu.classList.toggle("show");
+        }
+    </script>
+    <script>
+        function filterByName() {
+            const filterValue = document.getElementById('filterByNameInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#projectTableBody tr');
+
+            rows.forEach(row => {
+                const projectName = row.cells[0].innerText.toLowerCase();
+                if (projectName.includes(filterValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function sortByName() {
+            const sortOrder = document.getElementById('sortByNameSelect').value;
+            const rows = Array.from(document.querySelectorAll('#projectTableBody tr'));
+            const tableBody = document.getElementById('projectTableBody');
+
+            rows.sort((a, b) => {
+                const nameA = a.cells[0].innerText.toLowerCase();
+                const nameB = b.cells[0].innerText.toLowerCase();
+
+                if (sortOrder === 'asc') {
+                    return nameA.localeCompare(nameB);
+                } else {
+                    return nameB.localeCompare(nameA);
+                }
+            });
+
+            rows.forEach(row => tableBody.appendChild(row));
+        }
+
+        function toggleFilterByStatus() {
+            const status = prompt("Entrez un status à filtrer (ex: 'en cours', 'terminé', etc.) ou 'all' pour afficher tout :").toLowerCase();
+            const rows = document.querySelectorAll('#projectTableBody tr');
+
+            rows.forEach(row => {
+                const projectStatus = row.cells[4].innerText.toLowerCase();
+                if (status === 'all' || projectStatus.includes(status)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

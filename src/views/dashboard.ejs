@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <title>Tableau de Bord</title>
+</head>
+<body>
+  <%- include('sidebar') %>
+  <div class="dashboard-container">
+    <header class="topbar">
+      <h1>Tableau de Bord</h1>
+    </header>
+    <section class="stats">
+      <div class="stat-card">
+        <div class="icon tasks-icon"></div>
+        <h2>Tâches</h2>
+        <h4>Tâches incomplètes</h4>
+        <p><%= incompleteTasks %></p>
+        <h4>Tâches complètes</h4>
+        <p><%= completedTasks %></p>
+        <h4>Total des tâches</h4>
+        <p><%= totalTasks %></p>
+      </div>
+      <div class="stat-card">
+        <div class="icon users-icon"></div>
+        <h2>Utilisateurs</h2>
+        <p><%= totalUsers %></p>
+      </div>
+      <div class="stat-card">
+        <div class="icon projects-icon"></div>
+        <h2>Projets</h2>
+        <p><%= totalProjects %></p>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

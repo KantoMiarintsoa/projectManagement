@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/css/inscription.css">
+</head>
+<body>
+    <div class="container">
+        <div class="background">
+            <h2>KanPro</h2>
+            <p>
+                Gérez vos tâches, collaborez avec votre équipe et atteignez
+                vos objectifs académiques en toute simplicité !
+            </p>
+            <a href="/login" class="cta-button">Connexion</a>
+        </div>
+
+        <div class="form-container">
+            <h2>Inscription</h2>
+            <form action="/auth/register" method="POST">
+                <div class="input-group">
+                    <input type="text" id="username" name="username" placeholder="Votre pseudo" required>
+                </div>
+                    
+                <div class="input-group">
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirmer votre mot de passe" required>
+                </div>
+                <div class="input-group">
+                    <input type="tel" id="contact" name="contact" placeholder="Contact" required>
+                </div>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="sexe" value="male" required> Homme
+                    </label>
+                    <label>
+                        <input type="radio" name="sexe" value="female"> Femme
+                    </label>
+                </div>
+                <button type="submit" class="form-btn">S'inscrire</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", async function(){
+            const form=document.querySelector("form");
+            form.addEventListener("sunmit",async function(event) {
+                event.preventDefault();
+
+            const first_name = document.getElementById("first_name").value;
+            const last_name = document.getElementById("last_name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const contact = document.getElementById("contact").value;
+            const sexe = document.querySelector('input[name="sexe"]:checked').value;
+                
+            })
+
+            if (password !=confirmPassword){
+                alert("les mots de passe ne correspondent pas, veuillez ressayer!!!");
+                return;
+            }
+
+            const forData={
+                first_name,
+                last_name,
+                email,
+                password,
+                contact,
+                sexe
+
+            }
+
+            const response=await fetch('/submit',{
+                method: 'POST',
+                headers:{
+                    'Content_Type':'application/json'
+                },
+                body:JSON.stringify(FormData)
+            });
+
+            const data=await response.json();
+            
+            if(response.ok){
+                alert('inscription reussie')
+                window.location.href= '/login';
+            }
+
+            else{
+                alert('erreur: ${data.message')
+            }
+
+        })
+
+    </script> -->
+</body>
+</html>

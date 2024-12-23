@@ -1,0 +1,156 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+}
+h1{
+    color: black;
+}
+
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.topbar {
+    width: 100%;
+    background-color: #f4f4f4;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 24px;
+}
+
+/* Section Statistiques */
+.stats {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-evenly;
+}
+
+.stat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1;
+    max-width: 300px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #0056b3;
+}
+
+.stat-card p {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Icons */
+.icon {
+    height: 50px;
+    width: 50px;
+    margin: 0 auto 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4f8;
+}
+
+.tasks-icon {
+    background-color: #007BFF;
+}
+
+.users-icon {
+    background-color: #17a2b8;
+}
+
+.projects-icon {
+    background-color: #ffc107;
+}
+
+/* Section Tâches */
+.tasks {
+    width: 100%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.tasks h2 {
+    margin: 0 0 20px;
+    color: #0056b3;
+}
+
+/* Task Cards */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-card {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.task-card h3 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.task-card p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.status {
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 5px;
+    color: white;
+}
+
+.status.in-progress {
+    background-color: #007bff;
+}
+
+.status.pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status.completed {
+    background-color: #28a745;
+}
