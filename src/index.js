@@ -7,6 +7,7 @@ import {connectDB} from './db.js';
 import frontRouter from './routes/frontRoute.js';
 import bodyParser from 'body-parser';
 import projectRouter from './routes/projectRoutes.js'
+import taskRouter from './routes/projectRoutes.js'
 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -42,7 +43,7 @@ app.use(checkAuth)
 app.use("/auth", authRouter);
 app.use("/", frontRouter)
 app.use("/project",projectRouter)
-app.use("/task",projectRouter)
+app.use("/task",taskRouter)
 
 const noAuth=[
   "/login","/register","/auth/login"

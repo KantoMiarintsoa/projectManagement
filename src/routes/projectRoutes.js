@@ -8,7 +8,6 @@ router.get("/list",readProject)
 router.post("/edit/:id",updateProject)
 router.get("/delete/:id",deleteProject)
 router.post("/create",createTask)
-router.get("/task",createTask)
 router.post("total",getDashboardStats)
 
-export default router   
+export default router  

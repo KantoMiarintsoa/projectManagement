@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Board</title>
-    <link rel="stylesheet" href="../public/css/task.css">
+    <link rel="stylesheet" href="/css/task.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -202,7 +202,7 @@
                 <h3>Ajouter un Ticket</h3>
                 <button id="closeAddTaskModalButton">&times;</button>
             </div>
-            <form id="addTadkForm" action="/task/create" method="POST">
+            <form id="addTaskForm" action="/task/create" method="POST">
                 <div class="form-group">
                     <div class="modal-body">
                         <label for="newTaskTitle">Titre</label>
@@ -254,14 +254,60 @@
 
                 <label for="taskComment">Commentaire</label>
                 <textarea id="taskComment" placeholder="Ajoutez votre commentaire ici..."></textarea>
+                <span class="dots" onclick="toggleMenu(event)">•••</span>
+                <div class="menu">
+                    <button onclick="editTask(event, this)">Modifier</button>
+                    <button onclick="deleteTask(event, this)">Supprimer</button>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="cancel-btn" id="cancelButton">Fermer</button>
                 <button class="save-btn">Sauvegarder</button>
             </div>
         </div>
+
+        
     </div>
 
+    <script>
+        function toggleMenu(event) {
+            event.stopPropagation();
+            const menu = event.target.nextElementSibling;
+            document.querySelectorAll('.menu').forEach(el => {
+                if (el !== menu) el.style.display = 'none';
+            });
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function editTask(event, button) {
+            event.stopPropagation();
+            const ticket = button.closest('.ticket');
+            const title = ticket.querySelector('h3').textContent;
+            const description = ticket.querySelector('p').textContent;
+
+            const newTitle = prompt("Modifier le titre :", title);
+            const newDescription = prompt("Modifier la description :", description);
+
+            if (newTitle) ticket.querySelector('h3').textContent = newTitle;
+            if (newDescription) ticket.querySelector('p').textContent = newDescription;
+
+            button.parentElement.style.display = 'none';
+        }
+
+        function deleteTask(event, button) {
+            event.stopPropagation();
+            const ticket = button.closest('.ticket');
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) {
+                ticket.remove();
+            }
+        }
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        });
+    </script>
 
     <script>
         // Task Modal

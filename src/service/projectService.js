@@ -42,23 +42,6 @@ export async function updateProject(id, updateData) {
         }
     }
 
-    // export async function deleteProject(id) {
-    //     try {
-    //         const projectToDelete = await Project.findById(id);
-    
-    //         if (!projectToDelete) {
-    //             throw new Error("Projet non trouvé");
-    //         }
-    
-    //         await Project.findByIdAndDelete(id);
-    
-    //         return { success: true, message: "Projet supprimé avec succès" };
-    //     } catch (error) {
-    //         console.error("Erreur lors de la suppression du projet", error);
-    //         throw error; 
-    //     }
-    // }
-
     export async function deleteProject(id) {
         try {
             if (!id) {
@@ -105,4 +88,24 @@ export async function updateProject(id, updateData) {
             owner:user._id
         });
         return projects;
+    }
+
+    export async function updateTask(id, updateDataTask) {
+        try {
+            const taskToUpdate = await Project.findById(id);
+    
+            if (!taskToUpdate) {
+                throw new Error("Projet non trouvé");
+            }
+    
+            const updatedTask = await Project.findByIdAndUpdate(id, updateDataTask, {
+                new: true, 
+                runValidators: true, 
+            });
+    
+            return updatedTask;
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du projet", error);
+            throw error; 
+        }
     }

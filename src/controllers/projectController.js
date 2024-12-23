@@ -176,51 +176,25 @@ async function createTask(req,res){
     res.redirect("/task");
 }
 
-async function getTask(req, res) {
-    try {
-        const user = req.session.user; 
-
-        const { taskId } = req.params;
-
-        if (taskId) {
-            const task = await Task.findOne({ _id: taskId, owner: user._id });
-
-            if (!task) {
-                return res.status(404).json({ error: 'Tâche non trouvée' });
-            }
-
-            return res.status(200).json(task);
-        }
-
-        const tasks = await Task.find({ owner: user._id });
-        return res.status(200).json(tasks);
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: 'Erreur serveur' });
-    }
-}
-
 async function updateTask(req,res){
     try{
         const {id}=req.params;
         if(!id){
             return res.status(400).json({
-                message:"aucune message selectionne"
+                message:"aucone message selectionne"
             })
         }
         const updateData=req.body
-        await updateTaskervice(id, updateData);
+        await updateProjectInService(id, updateDataTask);
 
-        return res.redirect("/list")
+        return res.redirect("/task")
     }
     catch(error){
         return res.status(500).json({
-            message:"echec de la mis a jour de tache",
+            message:"echec de la mis a jour",
             error:error.message
         })
     }
-
 }
 
 async function deleteTask(req, res) {
