@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/userProfil.css">
+  <title>User Profile</title>
+</head>
+<body>
+  <%- include('sidebar') %>
+  <div class="profile-container">
+    <h2>Profils</h2>
+    <% if (users && users.length > 0) { %>
+      <% users.forEach((user) => { %>
+        <form class="profile-form">
+          <div class="form-group">
+            <label for="username">Pseudo</label>
+            <input type="text" id="username" name="username" value="<%= user.username %>">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" value="<%= user.email %>">
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Nouveau mot de passe">
+          </div>
+          <div class="form-group">
+            <label for="role">Rôle</label>
+            <input type="text" id="role" name="role" value="<%= user.role %>" readonly>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="save-btn">Sauvegarder</button>
+            <button type="reset" class="cancel-btn">Annuler</button>
+          </div>
+        </form>
+      <% }); %>
+    <% } else { %>
+      <p>Aucun utilisateur trouvé.</p>
+    <% } %>
+  </div>
+</body>
+</html>

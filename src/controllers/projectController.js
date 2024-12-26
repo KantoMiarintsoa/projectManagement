@@ -201,17 +201,17 @@ async function deleteTask(req, res) {
     const { id } = req.params; 
 
     if (!id) {
-        return res.status(400).json({ error: 'ID du projet manquant' });
+        return res.status(400).json({ error: 'ID du tache manquant' });
     }
 
     try {
-        const projectToDelete = await Project.findById(id);
+        const taskToDelete = await Project.findById(id);
     
-        if (!projectToDelete) {
-            return res.status(404).json({ error: 'Projet non trouvé' });
+        if (!taskToDelete) {
+            return res.status(404).json({ error: 'tache non trouvé' });
         }
 
-        await Project.findByIdAndDelete(id); 
+        await Task.findByIdAndDeleteTask(id); 
     
         return res.redirect("/task");
     } catch (error) {

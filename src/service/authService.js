@@ -16,3 +16,18 @@ export async function findUserByEmail(email) {
 export async function verifyPassword(user, password) {
     return user ? await bcrypt.compare(password, user.password) : false;
 }
+
+export async function updateUserProfileService(username, email, password) {
+    const user = await User.findOne({ username });
+    if (!user) {
+        throw new Error("Utilisateur non trouvé.");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    user.email = email;
+    user.password = hashedPassword;
+    await user.save();
+
+    return { username: user.username, email: user.email };
+}

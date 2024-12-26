@@ -109,3 +109,24 @@ export async function updateProject(id, updateData) {
             throw error; 
         }
     }
+
+    export async function deleteTask(id) {
+        try {
+            if (!id) {
+                throw new Error("ID du tache manquant");
+            }
+    
+            const taskToDelete = await Project.findById(id);
+        
+            if (!taskToDelete) {
+                throw new Error("Tache non trouvé");
+            }
+        
+            await Task.findByIdAndDeleteTask(id);
+        
+            return { success: true, message: "Tache supprimé avec succès" };
+        } catch (error) {
+            console.error("Erreur lors de la suppression du tache", error);
+            throw error; 
+        }
+    }

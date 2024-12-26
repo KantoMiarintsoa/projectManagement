@@ -91,4 +91,48 @@ export const getUser = (req, res)=>{
     res.redirect("/")
 }
 
-export{registerUser,loginUser}
+export const modifierProfilSchema = z.object({
+    email:z.string().email(),
+    password:z.string().min(6),
+    contact:z.string().regex(/^[0-9]{10}$/),
+    username:z.string()
+})
+
+async function updateUserProfile(req, res) {
+    try {
+        const { username, email, password } = req.body;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({
+                message: "Tous les champs (username, email, password) sont requis."
+            });
+        }
+
+            console.log(user)
+        const user = await User.findOne({ email }); 
+        if (!user) {
+            return res.status(404).json({
+                message: "Utilisateur non trouvé."
+            });
+        }
+
+        user.email = email;
+        user.password = password; 
+        await user.save();
+
+        return res.status(200).json({
+            message: "Profil mis à jour avec succès.",
+            user: { username: user.username, email: user.email }
+        });
+        
+    } catch (error) {
+        return res.status(500).json({
+            message: "Échec de la mise à jour du profil.",
+            error: error.message
+        });
+    }
+}
+
+
+
+export{registerUser,loginUser,updateUserProfile}

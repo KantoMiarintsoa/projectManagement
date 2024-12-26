@@ -1,107 +1,146 @@
-body{
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-}
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: white;
+    color: white;
 }
 
-.topbar {
+.trello-container {
+    padding: 20px;
+}
+
+header {
     display: flex;
     justify-content: space-between;
-    background-color: #d81313;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex-direction: row;
-    position: fixed;
-    width: 100%;
-    z-index: 1000; 
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.topbar button {
-    background-color:  #4a6d92 ;
+header h1 {
+    margin: 0;
+    color: black;
+}
+
+header button {
+    background-color: #1abc9c;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    padding: 10px 15px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.topbar button:hover {
-    background-color: #004085;
+header button:hover {
+    background-color: #16a085;
 }
 
-.board {
+.columns {
     display: flex;
-    padding: 1rem;
-    gap: 1rem;
-    margin-top: 70px;
+    gap: 20px;
+    width: 1000px;
+    /* height: 100px;
+    display: flex; */
+    border-radius: 100px;
 }
 
 .column {
-    background-color: white;
-    border-radius: 5px;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #34495e;
+    border-radius: 20px;
+    padding: 10px;
     flex: 1;
 }
 
 .column h2 {
     margin-top: 0;
-    color: #007bff;
 }
 
 .ticket {
-    background-color: #f8f9fa;
-    border-left: 5px solid #007bff;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
+    background-color: white; /* Carte en blanc */
+    color: black; /* Texte noir */
+    padding: 10px;
+    border-radius: 8px; /* Coin arrondi */
+    margin-bottom: 10px;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
     position: relative;
 }
 
-.ticket:hover {
-    background-color: #e2e6ea;
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.menu {
-    display: none;
+.options {
+    position: relative;
+}
+
+.three-dots {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.actions {
+    display: none; /* Masquer le menu au départ */
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: white;
-    border: 1px solid #ddd;
+    top: 0;
+    right: 0;
+    background-color: #34495e;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: white;
     z-index: 10;
+    padding: 5px;
 }
 
-.menu button {
-    background: none;
+.actions button {
+    background: transparent;
+    color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    width: 100%;
-    text-align: left;
+    padding: 5px 10px;
     cursor: pointer;
-    color: #333;
 }
 
-.menu button:hover {
-    background-color: #f1f1f1;
+.actions button:hover {
+    background-color: #16a085; /* Couleur au survol */
 }
 
-.dots {
+.ticket .options:hover .actions {
+    display: block; /* Afficher le menu lorsque la carte est survolée */
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px;
+    position: relative;
+}
+
+.modal-content .close {
     position: absolute;
     top: 10px;
     right: 10px;
+    font-size: 20px;
     cursor: pointer;
-    font-size: 18px;
+}
+#addTicketButton{
+    justify-content:space-around;
+    background-color: #343a40 ;
 }

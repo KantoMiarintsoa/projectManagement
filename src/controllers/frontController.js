@@ -1,5 +1,6 @@
 import { getListProjects, readProject } from "../service/projectService.js"
 import { getDashboardStats } from "../service/projectService.js"
+import {updateUserProfileService} from "../service/authService.js"
 
 export async function loginPage(req, res){
     return res.render("login")
@@ -38,6 +39,14 @@ export async function dashboard(req, res) {
         console.error("Erreur dans le contrôleur dashboard:", error);
         res.status(500).send("Erreur lors du chargement du tableau de bord");
     }
+}
+
+export async function updateProfil(req,res){
+    const users=await updateUserProfimleService({
+        owner:req.session.user._id
+    })
+    return res.render("profilUser", {users})
+
 }
 
 // export async function editProject(req,res){

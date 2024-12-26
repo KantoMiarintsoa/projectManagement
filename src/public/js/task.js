@@ -1,39 +1,43 @@
-// Get the modal
-var modal = document.getElementById("taskModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("addTaskBtn");
-
-// Get the <span> element that closes the modal
-var closeBtn = document.getElementById("closeModalBtn");
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-    modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-closeBtn.onclick = function() {
-    modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside the modal, close it
-window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
+// Afficher le modal lorsque l'utilisateur clique sur une tâche
+document.querySelectorAll('.ticket').forEach(ticket => {
+    ticket.addEventListener('click', () => {
+      const modal = document.getElementById('taskModal');
+      const title = ticket.getAttribute('data-title');
+      const description = ticket.getAttribute('data-description');
+  
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDescription').textContent = description;
+  
+      modal.style.display = 'flex';
+    });
+  });
+  
+  // Fermer le modal
+  document.querySelector('.modal .close').addEventListener('click', () => {
+    document.getElementById('taskModal').style.display = 'none';
+  });
+  
+  // Fermer le modal en cliquant à l'extérieur
+  window.addEventListener('click', (e) => {
+    const modal = document.getElementById('taskModal');
+    if (e.target === modal) {
+      modal.style.display = 'none';
     }
-}
+  });
 
-// Handle form submission
-document.getElementById("taskForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    var title = document.getElementById("taskTitle").value;
-    var description = document.getElementById("taskDescription").value;
-    var members = document.getElementById("members").value;
-    var status = document.getElementById("taskStatus").value;
+  const modal = document.getElementById("taskModal");
+const closeModal = document.querySelector(".close");
 
-    // You can process the data here or display the task dynamically
-
-    // Close modal after form submission
-    modal.style.display = "none";
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
 });
+
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Ajouter votre logique pour afficher le modal.
+
+  
