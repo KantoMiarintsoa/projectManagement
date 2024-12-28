@@ -100,31 +100,38 @@ export const modifierProfilSchema = z.object({
 
 async function updateUserProfile(req, res) {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, contact } = req.body;
 
-        if (!username || !email || !password) {
+        // Vérifier les champs obligatoires
+        if (!username || !email || !contact) {
             return res.status(400).json({
-                message: "Tous les champs (username, email, password) sont requis."
+                message: "Les champs username, email et contact sont requis."
             });
         }
 
-            console.log(user)
-        const user = await User.findOne({ email }); 
+        // Rechercher l'utilisateur dans la base de données
+        const user = await User.findOne({ username });
         if (!user) {
             return res.status(404).json({
                 message: "Utilisateur non trouvé."
             });
         }
 
+        // Mettre à jour les champs
         user.email = email;
-        user.password = password; 
+        user.contact = contact;
+
+        if (password && password.trim()) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user.password = hashedPassword;
+        }
+
         await user.save();
 
         return res.status(200).json({
             message: "Profil mis à jour avec succès.",
-            user: { username: user.username, email: user.email }
+            user: { username: user.username, email: user.email, contact: user.contact }
         });
-        
     } catch (error) {
         return res.status(500).json({
             message: "Échec de la mise à jour du profil.",
@@ -132,7 +139,5 @@ async function updateUserProfile(req, res) {
         });
     }
 }
-
-
 
 export{registerUser,loginUser,updateUserProfile}

@@ -57,6 +57,8 @@ function checkAuth(req, res, next) {
     return res.redirect('/login'); 
   } 
 }
+app.use(express.urlencoded({ extended: true }));
+
 
 
 // app.get('/index', checkAuth, (req, res) => {
@@ -71,6 +73,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');  
   });
 });
+
 
 
 connectDB.then((res)=>{

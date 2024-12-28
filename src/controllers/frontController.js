@@ -1,6 +1,7 @@
 import { getListProjects, readProject } from "../service/projectService.js"
 import { getDashboardStats } from "../service/projectService.js"
 import {updateUserProfileService} from "../service/authService.js"
+import Task from "../models/Task.js"
 
 export async function loginPage(req, res){
     return res.render("login")
@@ -41,8 +42,24 @@ export async function dashboard(req, res) {
     }
 }
 
+export async function updateTask(req,res){
+    try{
+        const tasks=await Task.find()
+    console.log(tasks)
+    return res.render("task",{tasks})
+}
+catch(error){
+    res.status(500).send('Erreur serveur');
+
+
+}
+    }
+
+export async function deleteTask(req,res){
+
+}
 export async function updateProfil(req,res){
-    const users=await updateUserProfimleService({
+    const users=await updateUserProfileService({
         owner:req.session.user._id
     })
     return res.render("profilUser", {users})
