@@ -25,7 +25,9 @@ const taskSchema=new mongoose.Schema(
         created_by:{
             type:Schema.Types.ObjectId,
             ref:"User"
-        }
+        },
+        project: { type: Schema.Types.ObjectId, ref: 'Project' }, 
+
     }
 )
 

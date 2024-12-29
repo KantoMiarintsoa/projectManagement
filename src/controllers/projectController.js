@@ -57,6 +57,7 @@ async function readProject(req, res) {
         });
     }
 
+
     catch(error){
         await session.aborttransanction();
         session.endSession();
@@ -220,4 +221,34 @@ async function deleteTask(req, res) {
     }
 }
 
-export { createProject, readProject ,updateProject,deleteProject,createTask,getDashboardStats};
+async function getProjectDetails(req, res) {
+    const { id } = req.params;
+    console.log('Requête reçue pour /project/detail/:id avec ID :', id);
+
+    if (!id) {
+        return res.status(400).send('ID du projet manquant');
+    }
+
+    try {
+        // Trouver le projet et remplir les tâches associées
+        const project = await Project.findById(id).populate('tasks');
+        if (!project) {
+            return res.status(404).send('Projet non trouvé');
+        }
+
+        // Sauvegarder les détails dans la session si nécessaire
+        req.session.projectDetails = {
+            project,
+            tasks: project.tasks,
+        };
+
+        // Rendre la vue avec les données du projet
+        return res.render('detailsProject', { project, tasks: project.tasks });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des détails du projet", error);
+        return res.status(500).send('Erreur lors de la récupération des détails du projet');
+    }
+}
+
+export { createProject, readProject, updateProject, deleteProject, createTask, getDashboardStats, getProjectDetails };
+

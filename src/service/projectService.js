@@ -130,3 +130,29 @@ export async function updateProject(id, updateData) {
             throw error; 
         }
     }
+
+    export async function getProjectDetails(id) {
+        try {
+            if (!id) {
+                throw new Error("ID du projet manquant");
+            }
+    
+            const project = await Project.findById(id)
+                .populate('tasks')    
+                .populate('messages'); 
+    
+            if (!project) {
+                throw new Error("Projet non trouvé");
+            }
+    
+            return {
+                project,
+                tasks: project.tasks,
+                messages: project.messages,
+            };
+        } catch (error) {
+            console.error("Erreur lors de la récupération des détails du projet", error);
+            throw new Error('Impossible de récupérer les détails du projet');
+        }
+    }
+    

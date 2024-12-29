@@ -66,6 +66,24 @@ export async function updateProfil(req,res){
 
 }
 
+export  async function detail(req,res){
+        try {
+            const projectId = req.params.id;
+    
+            const project = await readProject({ _id: projectId });
+    
+            if (!project) {
+                return res.status(404).send("Projet non trouvé");
+            }
+    
+            return res.render("detailsProject", { project });
+        } catch (error) {
+            console.error("Erreur dans le contrôleur detail:", error);
+            return res.status(500).send("Erreur lors du chargement des détails du projet");
+        }
+    }
+
+
 // export async function editProject(req,res){
 //     return res.render("")
     

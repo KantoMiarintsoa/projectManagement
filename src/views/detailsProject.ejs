@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détail du Projet</title>
+  <link rel="stylesheet" href="/css/detail_project.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    .header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .main-container {
+      padding: 20px;
+    }
+
+    .add-task-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .add-task-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .tasks {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .task {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .task:hover {
+      background-color: #f1f1f1;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 500px;
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
+
+    .task-actions {
+      margin-top: 20px;
+    }
+
+    .task-actions button {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .task-actions button:hover {
+      background-color: #1e8449;
+    }
+
+    .task-actions select,
+    .task-actions textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .comment-actions {
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .comment-actions button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .comment-actions button.cancel-btn {
+      background-color: #e74c3c;
+    }
+
+    .comment-actions button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Nom du Projet : <span><%= project.title %></span></h1>
+  </header>
+  <main class="main-container">
+    <button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
+    <ul class="tasks" id="taskList">
+      <li class="task" onclick="openTaskDetailModal('page admin', 'faire la page admin', '01/01/2024')">
+        <h3 class="task-title">page admin</h3>
+        <p class="task-desc">faire la page admin</p>
+        <span class="task-date">Échéance : 01/01/2024</span>
+      </li>
+      <li class="task" onclick="openTaskDetailModal('page auteur', 'faire la page auteur', '03/01/2024')">
+        <h3 class="task-title">page auteur</h3>
+        <p class="task-desc">faire la page auteur</p>
+        <span class="task-date">Échéance : 03/01/2024</span>
+      </li>
+      <li class="task" onclick="openTaskDetailModal('page lecteur', 'faire la page lecteur', '05/01/2024')">
+        <h3 class="task-title">page lecteur</h3>
+        <p class="task-desc">faire la page lecteur</p>
+        <span class="task-date">Échéance : 05/01/2024</span>
+      </li>
+      <li class="task" onclick="openTaskDetailModal('tester', 'faire le test', '30/12/2023')">
+        <h3 class="task-title">tester</h3>
+        <p class="task-desc">faire le test</p>
+        <span class="task-date">Échéance : 30/12/2023</span>
+      </li>
+    </ul>
+  </main>
+
+  <!-- Add Task Modal -->
+  <div class="modal" id="addTaskModal">
+    <form id="addTaskForm" action="/task/create" method="POST">
+      <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('addTaskModal')">&times;</span>
+      <h2>Ajouter une nouvelle tâche</h2>
+      <form id="taskForm">
+        <label for="taskTitle">Titre de la tâche</label>
+        <input type="text" id="taskTitle" name="taskTitle" required>
+
+        <label for="taskDesc">Description</label>
+        <textarea id="taskDesc" name="taskDesc" rows="3" required></textarea>
+
+        <label for="taskDate">Échéance</label>
+        <input type="date" id="taskDate" name="taskDate" required>
+
+        <button class="save-btn" id="saveTaskButton" type="submit">Ajouter</button>
+      </form>
+    </div>
+  </form>
+  </div>
+
+  <!-- Task Detail Modal -->
+  <div class="modal" id="taskDetailModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('taskDetailModal')">&times;</span>
+      <h2 id="detailTitle">Détails de la tâche</h2>
+      <p id="detailDesc"></p>
+      <span id="detailDate"></span>
+
+      <div class="task-actions">
+        <button onclick="redirectToAssignPage()">Assigner membre</button>
+
+        <label for="taskStatus">Statut :</label>
+        <select id="taskStatus">
+          <option value="notStarted">Non commencé</option>
+          <option value="inProgress">En cours</option>
+          <option value="completed">Terminé</option>
+        </select>
+
+        <label for="taskComment">Commentaire :</label>
+        <textarea id="taskComment" rows="3" placeholder="Ajoutez un commentaire..."></textarea>
+
+        <div class="comment-actions">
+          <button class="cancel-btn" onclick="closeModal('taskDetailModal')">Annuler</button>
+          <button onclick="sendComment()">Envoyer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Ouvrir un modal spécifique
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'flex';
+    }
+
+    // Fermer un modal spécifique
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Ouvrir le modal d'ajout de tâche
+    function openAddTaskModal() {
+      openModal('addTaskModal');
+    }
+
+    // Ouvrir le modal de détail d'une tâche
+    function openTaskDetailModal(title, desc, date) {
+      document.getElementById('detailTitle').innerText = title;
+      document.getElementById('detailDesc').innerText = desc;
+      document.getElementById('detailDate').innerText = `Échéance : ${date}`;
+      openModal('taskDetailModal');
+    }
+
+    // Rediriger vers la page Assigner Membre
+    function redirectToAssignPage() {
+      window.location.href = 'assigner_membre.html';
+    }
+
+    // Envoyer un commentaire
+    function sendComment() {
+      const comment = document.getElementById('taskComment').value;
+      if (comment.trim()) {
+        alert('Commentaire envoyé : ' + comment);
+        document.getElementById('taskComment').value = '';
+        closeModal('taskDetailModal');
+      } else {
+        alert('Veuillez ajouter un commentaire avant d\'envoyer.');
+      }
+    }
+  </script>
+</body>
+</html>
