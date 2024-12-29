@@ -46,7 +46,7 @@ app.use("/project",projectRouter)
 app.use("/task",taskRouter)
 
 const noAuth=[
-  "/login","/register","/auth/login"
+  "/login","/register","/auth/login", "/auth/register"
 ]
 
 function checkAuth(req, res, next) {
