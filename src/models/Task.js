@@ -26,7 +26,9 @@ const taskSchema=new mongoose.Schema(
             type:Schema.Types.ObjectId,
             ref:"User"
         },
-        project: { type: Schema.Types.ObjectId, ref: 'Project' }, 
+        // we can use other structure
+        // because it's mongodb, i will create an array of tasks in project model
+        // project: { type: Schema.Types.ObjectId, ref: 'Project' }, 
 
     }
 )

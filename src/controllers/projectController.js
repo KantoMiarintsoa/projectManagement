@@ -1,6 +1,6 @@
 import { z } from "zod";
 import Project from "../models/Project.js";
-import { updateProject as updateProjectInService } from "../service/projectService.js";
+import { addTask, updateProject as updateProjectInService, readProject as getProject } from "../service/projectService.js";
 import Task from "../models/Task.js";
 
 export const createProjectSchema=z.object({
@@ -29,7 +29,7 @@ async function createProject(req, res) {
 
 
 async function readProject(req, res) {
-    const { status, sort } = request.query; 
+    const { status, sort } = req.query; 
     const session=await mongoose.startSession();
 
     try{
@@ -163,18 +163,22 @@ export const createTaskSchema=z.object({
 })
 
 async function createTask(req,res){
-    const {name,descriptions,status}=req.body
-    const user=req.session.user
+    // i will structure the project as service
+    // remember, task is linked to project
+    // you didn't do that
+    const {name,description, dueDate}=req.body
 
-    const task=new Task({
-        name,
-        descriptions,
-        owner:user._id,
-        status,
-    });
-    await task.save();
-    console.log(name)
-    res.redirect("/task");
+    // get project first
+    const {id}=req.params;
+    const user=req.session.user;
+
+    const project = await getProject({_id:id});
+    if(!project){
+        res.redirect(`/list`);
+    }
+
+    await addTask(id, {name, description, dueDate});
+    return res.redirect(`/project/detail/${id}`);
 }
 
 async function updateTask(req,res){

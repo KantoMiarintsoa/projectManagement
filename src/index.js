@@ -43,6 +43,10 @@ app.use(checkAuth)
 app.use("/auth", authRouter);
 app.use("/", frontRouter)
 app.use("/project",projectRouter)
+// task router is just the project router
+// you shouldn't do that
+// use only one
+// i will use only the project
 app.use("/task",taskRouter)
 
 const noAuth=[

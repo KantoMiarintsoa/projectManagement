@@ -1,6 +1,7 @@
 import Project from "../models/Project.js";
 import User from "../models/User.js";
 import { task } from "../controllers/frontController.js";
+import Task from "../models/Task.js";
 
 export async function createTask(taskData){
     const newTask=await Project.create(taskData)
@@ -90,6 +91,21 @@ export async function updateProject(id, updateData) {
         return projects;
     }
 
+    export async function addTask(projectId, taskData){
+        try{
+            const task = await Task.create(taskData);
+            const project = await Project.findOne({
+                _id:projectId
+            }).select("+tasks");
+            // add task to array tasks of project
+            project.tasks.push(task);
+            project.save();
+
+        }catch(error){
+            console.log(error);
+        }
+    }
+
     export async function updateTask(id, updateDataTask) {
         try {
             const taskToUpdate = await Project.findById(id);
@@ -156,3 +172,6 @@ export async function updateProject(id, updateData) {
         }
     }
     
+    export async function getProjectByid(id){
+        
+    }

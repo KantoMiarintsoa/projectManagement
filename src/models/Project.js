@@ -25,7 +25,11 @@ const projectSchema=new mongoose.Schema(
             type:Schema.Types.ObjectId,
             ref:"User"
         },
-        tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }], 
+        // we only need this
+        // no need to add a foreign key in Task
+        // if it was sql, you're structure was right
+        // this is much better
+        tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' , select:false}], 
 
     }
 )
