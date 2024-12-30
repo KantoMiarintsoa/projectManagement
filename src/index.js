@@ -8,7 +8,7 @@ import frontRouter from './routes/frontRoute.js';
 import bodyParser from 'body-parser';
 import projectRouter from './routes/projectRoutes.js'
 import taskRouter from './routes/projectRoutes.js'
-
+import MongoStore from "connect-mongo";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -34,7 +34,10 @@ app.use(session({
   secret: 'kanto123hkbuio=cfgqwrjhrehsdjhhhjerh', 
   resave: false,           
   saveUninitialized: false,
-  cookie: { maxAge: 600000 } 
+  cookie: { maxAge: 600000 },
+  store:MongoStore.create({
+    mongoUrl:"mongodb://localhost:27017/projectManagement"
+  })
 }));
 
 

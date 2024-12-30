@@ -234,7 +234,7 @@ async function getProjectDetails(req, res) {
     if (!id) {
         return res.status(400).send('ID du projet manquant');
     }
-
+    
     try {
         // Trouver le projet et remplir les tâches associées
         const project = await getProjectByid(id);
