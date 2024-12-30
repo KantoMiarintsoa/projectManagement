@@ -138,6 +138,7 @@
                                         <button class="edit-btn" onclick="openEditModal('<%= project._id %>', '<%= project.title %>', '<%= project.dateStart %>', '<%= project.dueDate %>')">Éditer</button>
                                         <!-- <button class="delete-btn" onclick="confirmDelete('<%= project._id %>')">Supprimer</button> -->
                                         <a href="project/delete/<%= project._id %>" class="delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</a>
+                                        <a href="project/detail/<%= project._id %>">Voir detail</a>
                                     </div>
                                 </div>
                             </td>

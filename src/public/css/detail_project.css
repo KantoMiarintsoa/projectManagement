@@ -1,0 +1,124 @@
+/* Général */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #4a4a4a;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .header h1 {
+    margin: 0;
+  }
+  
+  .header span {
+    color: #b0b0b0;
+  }
+  
+  /* Bouton Ajouter */
+  .add-task-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    font-size: 1rem;
+  }
+  
+  .add-task-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* Tâches */
+  .tasks {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 600px;
+  }
+  
+  .task {
+    background-color: #fff;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task-title {
+    font-size: 1.2rem;
+    margin: 0 0 5px;
+  }
+  
+  .task-desc {
+    font-size: 1rem;
+    margin: 0 0 10px;
+  }
+  
+  .task-date {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+  
+  .close-btn {
+    font-size: 1.5rem;
+    color: #aaa;
+    float: right;
+    cursor: pointer;
+  }
+  
+  .close-btn:hover {
+    color: #000;
+  }
+  
+  label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+  }
+  
+  input, textarea, button {
+    width: 100%;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
