@@ -14,7 +14,7 @@ export async function createProject(projectData){
 
 export async function readProject(projectData){
     try{
-        const listProjects=await Project.find(projectData);
+        const listProjects=await Project.find(projectData).select("+tasks");
         return listProjects;
     }
     catch(error){
@@ -173,5 +173,14 @@ export async function updateProject(id, updateData) {
     }
     
     export async function getProjectByid(id){
-        
+        try{
+            const project=await Project.findOne({_id:id}).select("+tasks").populate({
+                path:"tasks"
+            });
+            return project;
+        }
+        catch(error){
+            console.error("erreur lors de l affichage des donnes",error);
+            throw error;
+        }
     }

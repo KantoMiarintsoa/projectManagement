@@ -4,7 +4,7 @@ const taskSchema=new mongoose.Schema(
         name:{
             type:String,
         },
-        descriptions:{
+        description:{
             type:String,
         },
         status:{
@@ -29,7 +29,11 @@ const taskSchema=new mongoose.Schema(
         // we can use other structure
         // because it's mongodb, i will create an array of tasks in project model
         // project: { type: Schema.Types.ObjectId, ref: 'Project' }, 
-
+        
+        // you forgot the dueDate
+        dueDate:{
+            type: Date
+        }
     }
 )
 

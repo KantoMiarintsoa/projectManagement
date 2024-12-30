@@ -1,6 +1,6 @@
 import { z } from "zod";
 import Project from "../models/Project.js";
-import { addTask, updateProject as updateProjectInService, readProject as getProject } from "../service/projectService.js";
+import { addTask, updateProject as updateProjectInService, readProject as getProject, getProjectByid } from "../service/projectService.js";
 import Task from "../models/Task.js";
 
 export const createProjectSchema=z.object({
@@ -168,6 +168,8 @@ async function createTask(req,res){
     // you didn't do that
     const {name,description, dueDate}=req.body
 
+    console.log(name, description, dueDate)
+
     // get project first
     const {id}=req.params;
     const user=req.session.user;
@@ -235,7 +237,7 @@ async function getProjectDetails(req, res) {
 
     try {
         // Trouver le projet et remplir les tâches associées
-        const project = await Project.findById(id).populate('tasks');
+        const project = await getProjectByid(id);
         if (!project) {
             return res.status(404).send('Projet non trouvé');
         }
@@ -247,7 +249,7 @@ async function getProjectDetails(req, res) {
         };
 
         // Rendre la vue avec les données du projet
-        return res.render('detailsProject', { project, tasks: project.tasks });
+        return res.render('detailsProject', { project});
     } catch (error) {
         console.error("Erreur lors de la récupération des détails du projet", error);
         return res.status(500).send('Erreur lors de la récupération des détails du projet');
