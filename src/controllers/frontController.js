@@ -83,6 +83,11 @@ export  async function detail(req,res){
         }
     }
 
+    export async function invitationPage(req, res) {
+        const session = req.session;
+        return res.render("detailsProject", { session });
+    }
+    
 
 // export async function editProject(req,res){
 //     return res.render("")

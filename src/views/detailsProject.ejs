@@ -76,6 +76,19 @@
       max-width: 500px;
       position: relative;
     }
+    .add-task-btn, .invite-member-btn {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .add-task-btn:hover, .invite-member-btn:hover {
+      background-color: #2980b9;
+    }
 
     .close-btn {
       position: absolute;
@@ -148,6 +161,7 @@
     <h1>Nom du Projet : <span><%= project.title %></span></h1>
   </header>
   <main class="main-container">
+    <button class="invite-member-btn" onclick="openInviteMemberModal()">Inviter membre</button>
     <button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
     <ul class="tasks" id="taskList">
       <% project.tasks.forEach((task, index)=> { %>
@@ -159,6 +173,17 @@
       <% }) %>
     </ul>
   </main>
+  <div class="modal" id="inviteMemberModal">
+    <form id="inviteMemberForm" action="/project/invitation" method="POST">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('inviteMemberModal')">&times;</span>
+        <h2>Inviter un membre</h2>
+        <label for="memberEmail">Email du membre :</label>
+        <input type="email" id="memberEmail" name="email" required>
+        <button class="save-btn" type="submit">Envoyer l'invitation</button>
+      </div>
+    </form>
+  </div>  
 
   <!-- Add Task Modal -->
   <div class="modal" id="addTaskModal">
@@ -228,6 +253,11 @@
     function closeModal(modalId) {
       document.getElementById(modalId).style.display = 'none';
     }
+
+    function openInviteMemberModal() {
+      openModal('inviteMemberModal');
+    }
+
 
     // Ouvrir le modal d'ajout de tâche
     function openAddTaskModal() {
