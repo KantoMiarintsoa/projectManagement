@@ -174,7 +174,11 @@
     </ul>
   </main>
   <div class="modal" id="inviteMemberModal">
-    <form id="inviteMemberForm" action="/project/invitation" method="POST">
+    <!-- <form id="inviteMemberForm" action="/project/invitation" method="POST"> -->
+    <!-- verifeo oa le route fa tsy mifanaraka mintsy 
+     tsy misy /project/invitation zany ao fa enao kosae-->
+     <!-- router.post('/send', sendInvitationController); io no ao donc:-->
+    <form id="inviteMemberForm" action="/project/send" method="POST"></form>
       <div class="modal-content">
         <span class="close-btn" onclick="closeModal('inviteMemberModal')">&times;</span>
         <h2>Inviter un membre</h2>

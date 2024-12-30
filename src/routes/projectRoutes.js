@@ -13,6 +13,8 @@ router.post("/detail/:id/createTask",createTask)
 router.post("total",getDashboardStats)
 router.delete("/deleteTask/:id",deleteTask)
 router.get("/detail/:id",getProjectDetails)
+// preciseo hoe amn projet inona no handefasana invitation
+// tsy fantatra mantsy hoe amn inona zao
 router.post('/send', sendInvitationController);
 router.get('/search', searchInvitationsController);
 
