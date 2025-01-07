@@ -3,10 +3,53 @@ import User from "../models/User.js";
 import { task } from "../controllers/frontController.js";
 import Task from "../models/Task.js";
 
+
 export async function createTask(taskData){
     const newTask=await Project.create(taskData)
     return newTask
 }
+
+export async function addTask(projectId, taskData){
+    try{
+        const task = await Task.create(taskData);
+        const project = await Project.findOne({
+            _id:projectId
+        }).select("+tasks");
+        project.tasks.push(task);
+        project.save();
+
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function createMember(projectId, memberData) {
+    try {
+        const member = await User.findOne({ email: memberData.email });
+        console.log(memberData.email)
+        if (!member) {
+            throw new Error(`Aucun utilisateur trouvé avec l'email : ${memberData.email}`);
+        }
+
+        const project = await Project.findOne({ _id: projectId }).select("+members");
+        if (!project) {
+            throw new Error(`Aucun projet trouvé avec l'ID : ${projectId}`);
+        }
+        if (!project.members.includes(member._id)) {
+            project.members.push(member._id);
+            await project.save();
+        } else {
+            console.log(memberData.email);
+        }
+
+    } catch (error) {
+        console.error(error.message || error);
+    }
+}
+
+
+
+
 export async function createProject(projectData){
     const newProject=await Project.create(projectData)
     return newProject
@@ -91,21 +134,7 @@ export async function updateProject(id, updateData) {
         return projects;
     }
 
-    export async function addTask(projectId, taskData){
-        try{
-            const task = await Task.create(taskData);
-            const project = await Project.findOne({
-                _id:projectId
-            }).select("+tasks");
-            // add task to array tasks of project
-            project.tasks.push(task);
-            project.save();
-
-        }catch(error){
-            console.log(error);
-        }
-    }
-
+    
     export async function updateTask(id, updateDataTask) {
         try {
             const taskToUpdate = await Project.findById(id);
@@ -171,12 +200,18 @@ export async function updateProject(id, updateData) {
             throw new Error('Impossible de récupérer les détails du projet');
         }
     }
-    
+  
     export async function getProjectByid(id){
         try{
-            const project=await Project.findOne({_id:id}).select("+tasks").populate({
-                path:"tasks"
-            });
+            const project=await Project.findOne({_id:id}).select("+tasks").select("+members").populate({
+                path:"tasks",
+                populate:{
+                    path:"assigned_to",
+                    model:"User"
+                }
+            }).populate({
+                path:"members"
+            })
             return project;
         }
         catch(error){
@@ -184,3 +219,24 @@ export async function updateProject(id, updateData) {
             throw error;
         }
     }
+
+    export async function getTaskById(id) {
+        try {
+          return await Task.findById(id).populate("assigned_to");
+        } catch (error) {
+          console.error("Erreur lors de la récupération de la tâche:", error);
+          throw error;
+        }
+      }
+      
+    export async function updateTaskTomember(id, updateData) {
+        try{
+            return await Task.findByIdAndUpdate(id, updateData, { new: true });
+        }
+        catch(error){
+            console.error("Erreur lors de la mise à jour de la tâche:", error);
+            throw error;
+
+        }
+    }
+

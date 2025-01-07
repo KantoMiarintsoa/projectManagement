@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Schema } from "zod";
 
 const userSchema=new mongoose.Schema(
     {
@@ -23,7 +24,7 @@ const userSchema=new mongoose.Schema(
         createdAt:{
             type:Date,
             default: Date.now,
-        }
+        },
     },
 )
     

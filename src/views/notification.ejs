@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liste des Notifications</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/css/notification.css">
+</head>
+<body>
+  <%- include('sidebar') %>
+
+  <div class="container">
+    <h1><i class="fas fa-bell"></i> Liste des Notifications</h1> <!-- Icône ajoutée ici -->
+
+    <div class="notification-list">
+      <div class="notification">
+        <div class="notification-header">
+          <span class="notification-icon"><i class="fas fa-tasks"></i></span>
+          <span class="notification-title">Nouvelle tâche assignée</span>
+          <span class="notification-time">Il y a 10 minutes</span>
+        </div>
+        <p class="notification-message">Une nouvelle tâche a été assignée à vous. Veuillez la vérifier dans votre espace de travail.</p>
+      </div>
+
+      <div class="notification">
+        <div class="notification-header">
+          <span class="notification-icon"><i class="fas fa-check-circle"></i></span>
+          <span class="notification-title">Tâche terminée</span>
+          <span class="notification-time">Il y a 30 minutes</span>
+        </div>
+        <p class="notification-message">Une tâche que vous suivez a été marquée comme terminée.</p>
+      </div>
+
+      <div class="notification">
+        <div class="notification-header">
+          <span class="notification-icon"><i class="fas fa-bell"></i></span>
+          <span class="notification-title">Rappel d'échéance</span>
+          <span class="notification-time">Il y a 1 heure</span>
+        </div>
+        <p class="notification-message">Votre tâche "Rédiger le rapport" doit être soumise dans 2 heures.</p>
+      </div>
+
+      <div class="notification">
+        <div class="notification-header">
+          <span class="notification-icon"><i class="fas fa-sync-alt"></i></span>
+          <span class="notification-title">Mise à jour de projet</span>
+          <span class="notification-time">Il y a 3 heures</span>
+        </div>
+        <p class="notification-message">Le projet "Site web interne" a été mis à jour avec de nouvelles fonctionnalités.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -21,9 +21,15 @@ const invitationSchema = new mongoose.Schema({
     type: String,
     default: 'pending', 
   },
+  project: {
+    type: Schema.Types.ObjectId,
+    ref: "Project", 
+    required: true, 
+  },
 }, {
   timestamps: true, 
 });
 
 const Invitation= mongoose.model('Invitation', invitationSchema);
 export default Invitation;
+

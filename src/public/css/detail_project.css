@@ -6,13 +6,20 @@ body {
     background-color: #f7f7f7;
     color: #333;
   }
-  
+  .wrapper{
+    display: flex;
+    flex-direction: column;
+    flex:1;
+  }
   /* Header */
   .header {
-    background-color: #4a4a4a;
     color: #fff;
     padding: 20px;
     text-align: center;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    background-color: #2c3e50;
   }
   
   .header h1 {
@@ -44,9 +51,13 @@ body {
   .tasks {
     list-style: none;
     padding: 0;
-    margin: 0 auto;
+    margin: 2rem auto;
     width: 90%;
-    max-width: 600px;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+
   }
   
   .task {
@@ -56,7 +67,9 @@ body {
     margin-bottom: 15px;
     padding: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-width:500px;
   }
+
   
   .task-title {
     font-size: 1.2rem;
@@ -121,4 +134,374 @@ body {
     border-radius: 5px;
     font-size: 1rem;
   }
-  
+
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+  }
+
+  .main-container {
+    padding: 20px;
+  }
+
+  .add-task-btn {
+    background-color: #4a6d92;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .add-task-btn:hover {
+    background-color: #4a6d92;
+  }
+
+  .tasks {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .task {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .task:hover {
+    background-color: #f1f1f1;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%; 
+    max-width: 500px;
+    position: relative;
+  }
+  .add-task-btn, .invite-member-btn {
+    background-color: #4a6d92;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 400px;
+    height: 50px;
+  }
+
+  .add-task-btn:hover, .invite-member-btn:hover {
+    background-color: #4a6d92;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+  }
+
+  .task-actions {
+    margin-top: 20px;
+  }
+
+  .task-actions button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .task-actions button:hover {
+    background-color: #1e8449;
+  }
+
+  .task-actions select,
+  .task-actions textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .comment-actions {
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  .comment-actions button {
+    background-color: #4a6d92;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .comment-actions button.cancel-btn {
+    background-color: #e74c3c;
+  }
+
+  .comment-actions button:hover {
+    opacity: 0.9;
+  }
+  .view-members-btn {
+    background-color: #4a6d92;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.view-members-btn:hover {
+background-color: #3464a0;
+}
+
+.members ul {
+list-style-type: none; 
+padding: 0;
+margin: 0;
+}
+
+.members ul li {
+display: grid; /* Utilise une grille pour organiser les colonnes */
+grid-template-columns: 1fr 2fr; /* Deux colonnes : une pour le label, l'autre pour l'email */
+align-items: center; /* Centre verticalement les éléments */
+padding: 10px;
+background-color: #f9f9f9; /* Fond léger */
+margin: 5px 0; /* Espacement entre les lignes */
+border: 1px solid #ddd; /* Bordure discrète */
+border-radius: 5px; /* Coins arrondis */
+font-size: 16px; /* Taille du texte */
+transition: background-color 0.3s ease; /* Animation douce pour le hover */
+}
+
+.members ul li:hover {
+background-color: #eaf4fc; /* Change le fond au survol */
+}
+
+.members ul li strong {
+font-weight: bold; /* Texte en gras pour le label */
+color: #555; /* Couleur subtile pour le label */
+}
+
+.members ul li span {
+color: #333; /* Couleur principale pour l'email */
+}
+
+.modal-content {
+background-color: #ffffff;
+border-radius: 10px;
+padding: 20px;
+width: 90%;
+max-width: 500px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+position: relative;
+animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
+}
+
+.close-btn {
+position: absolute;
+top: 10px;
+right: 10px;
+width: 30px;
+height: 30px;
+background-color: #e74c3c;
+color: #ffffff;
+border: none;
+border-radius: 50%;
+font-size: 16px;
+text-align: center;
+line-height: 30px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+background-color: #c0392b;
+}
+
+h2 {
+margin-top: 0;
+color: #34495e;
+font-size: 24px;
+text-align: center;
+}
+
+label {
+display: block;
+margin: 15px 0 5px;
+color: #7f8c8d;
+font-weight: bold;
+font-size: 14px;
+}
+
+select {
+width: 100%;
+padding: 10px;
+font-size: 16px;
+border: 1px solid #ddd;
+border-radius: 5px;
+margin-bottom: 20px;
+transition: border-color 0.3s ease;
+}
+
+select:focus {
+border-color: #3498db;
+outline: none;
+box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.save-btn {
+display: block;
+width: 100%;
+padding: 12px;
+background-color: #2ecc71;
+color: #ffffff;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+background-color: #27ae60;
+}
+
+/* Styles pour le tableau */
+.members-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.members-table th,
+.members-table td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 12px;
+}
+
+.members-table th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.members-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.members-table tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Optionnel : Ajouter une bordure arrondie au tableau */
+.members-table {
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/* Styles pour le bouton bleu roi */
+.button-blue {
+  background-color: #0b1122; /* Bleu roi */
+  color: #fff; /* Couleur du texte en blanc */
+  padding: 10px 20px; /* Espacement interne */
+  border: none; /* Pas de bordure */
+  border-radius: 5px; /* Coins arrondis */
+  font-size: 16px; /* Taille de la police */
+  font-weight: bold; /* Texte en gras */
+  text-transform: uppercase; /* Texte en majuscules */
+  cursor: pointer; /* Curseur pointeur */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Animation */
+}
+
+.button-blue:hover {
+  background-color: #3464a0; /* Bleu roi plus sombre au survol */
+  transform: scale(1.05); /* Légère mise à l'échelle */
+}
+
+.button-blue:active {
+  background-color: #2d4ea4; /* Encore plus sombre lorsqu'on clique */
+  transform: scale(0.98); /* Effet de clic */
+}
+.button-blue:disabled {
+  opacity: 0.6; /* Rendre le bouton plus transparent */
+  cursor: not-allowed; /* Changer le curseur */
+}
+
+
+.button-container{
+  display: flex;
+  justify-content: end;
+  gap: 2rem;
+}
+
+.top-button{
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: fit-content;
+  height: 50px;
+  font-weight: bold;
+}
+
+.top-button:hover{
+  background-color: #3b536b;
+}
+

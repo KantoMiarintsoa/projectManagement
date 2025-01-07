@@ -25,11 +25,26 @@ const projectSchema=new mongoose.Schema(
             type:Schema.Types.ObjectId,
             ref:"User"
         },
-        // we only need this
-        // no need to add a foreign key in Task
-        // if it was sql, you're structure was right
-        // this is much better
-        tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' , select:false}], 
+        invitations: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: "invitationModel",
+            },
+          ],
+        tasks: 
+        [
+            {
+            type: Schema.Types.ObjectId,
+             ref: 'Task', 
+             select:false
+            }
+        ], 
+
+        members:[{
+            type:Schema.Types.ObjectId,
+            ref:"User",
+            select:false
+        }]
 
     }
 )

@@ -1,4 +1,4 @@
-export function validateData(schema){
+export function validateData(schema, throwError=true){
     return async function(req, res, next){
         try{
             
@@ -6,10 +6,13 @@ export function validateData(schema){
             next()
         }
         catch(error){
-            return res.status(400)
-                .json({
-                    errors:error.errors
-                })
+            if(throwError)
+                return res.status(400)
+                    .json({
+                        errors:error.errors
+                    })
+            
+            next()
         }
     }
 }

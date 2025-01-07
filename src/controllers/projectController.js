@@ -1,7 +1,10 @@
 import { z } from "zod";
 import Project from "../models/Project.js";
-import { addTask, updateProject as updateProjectInService, readProject as getProject, getProjectByid } from "../service/projectService.js";
+import { addTask, updateProject as updateProjectInService, readProject as getProject, getProjectByid, createMember} from "../service/projectService.js";
 import Task from "../models/Task.js";
+import User from "../models/User.js";
+import { task } from "./frontController.js";
+
 
 export const createProjectSchema=z.object({
     title:z.string(),
@@ -163,14 +166,10 @@ export const createTaskSchema=z.object({
 })
 
 async function createTask(req,res){
-    // i will structure the project as service
-    // remember, task is linked to project
-    // you didn't do that
     const {name,description, dueDate}=req.body
 
     console.log(name, description, dueDate)
 
-    // get project first
     const {id}=req.params;
     const user=req.session.user;
 
@@ -229,32 +228,101 @@ async function deleteTask(req, res) {
 
 async function getProjectDetails(req, res) {
     const { id } = req.params;
+    
     console.log('Requête reçue pour /project/detail/:id avec ID :', id);
-
     if (!id) {
         return res.status(400).send('ID du projet manquant');
     }
-    
     try {
-        // Trouver le projet et remplir les tâches associées
         const project = await getProjectByid(id);
         if (!project) {
             return res.status(404).send('Projet non trouvé');
         }
+        const users = await User.find({}, "email"); 
+        const tasks = await Task.find({ project: id }).populate("assigned_to", "selectedMembers");
 
-        // Sauvegarder les détails dans la session si nécessaire
         req.session.projectDetails = {
             project,
             tasks: project.tasks,
+            users:project.users,
+
         };
 
-        // Rendre la vue avec les données du projet
-        return res.render('detailsProject', { project});
+        return res.render('detailsProject', { project,users,tasks});
     } catch (error) {
         console.error("Erreur lors de la récupération des détails du projet", error);
         return res.status(500).send('Erreur lors de la récupération des détails du projet');
     }
 }
 
-export { createProject, readProject, updateProject, deleteProject, createTask, getDashboardStats, getProjectDetails };
+export const addMemberSchema=z.object({
+       email:z.string().email(),
+
+})
+async function addMember(req,res){
+    const {email}=req.body
+
+    console.log(email)
+
+    const {id}=req.params;
+    const user=req.session.user;
+
+    const project = await getProject({_id:id});
+    if(!project){
+        res.redirect(`/list`);
+    }
+    await createMember(id,{email})
+    return res.redirect(`/project/detail/${id}`);
+}
+
+
+//  @param {Object} req - 
+//  @param {Object} res - 
+export const assigneMemmberSchema=z.object({
+    selectedMembers: z.array(z.string().email()),
+    email:z.string().email(),
+})
+
+async function assignMembersToTask(req, res) {
+    const { id } = req.params;
+    const { taskId } = req.body;
+    let { selectedMembers } = req.body; 
+
+    console.log(selectedMembers);
+
+    if (typeof selectedMembers === 'string') {
+        console.log("Un seul élément est sélectionné :", selectedMembers);
+        selectedMembers = [selectedMembers]; 
+    }
+
+    if (!id || !taskId || !selectedMembers || selectedMembers.length === 0) {
+        return res.status(400).send('Données incomplètes pour l’assignation');
+    }
+
+    try {
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).send('Tâche non trouvée');
+        }
+
+        const members = await User.find({ email: { $in: selectedMembers } });
+        if (members.length < selectedMembers.length) {
+            return res.status(400).send('Certains membres sélectionnés n’existent pas');
+        }
+
+        task.assigned_to = members.map((member) => member._id);
+        await task.save();
+
+        console.log('Membres assignés avec succès à la tâche :', task._id);
+
+        return res.redirect(`/project/detail/${id}`);
+    } catch (error) {
+        console.error("Erreur lors de l’assignation des membres à la tâche :", error);
+        return res.status(500).send('Erreur lors de l’assignation des membres à la tâche');
+    }
+}
+
+
+
+export { createProject, readProject, updateProject, deleteProject, createTask, getDashboardStats, getProjectDetails,addMember ,assignMembersToTask};
 

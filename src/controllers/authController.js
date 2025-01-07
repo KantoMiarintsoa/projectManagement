@@ -1,6 +1,6 @@
 // import { connectDB } from "../db.js";
 import {z} from 'zod'
-import { createUser, findUserByEmail, userExists } from '../service/authService.js';
+import { createUser, findUserByEmail, userExists, verifyOldPassword, updateUserProfileService } from '../service/authService.js';
 import bcrypt from 'bcrypt';
 
 export const registerSchema = z.object({
@@ -54,7 +54,7 @@ async function loginUser(req, res) {
             return res.status(500).json({ message: "Mot de passe manquant dans la base de données." });
           }
 
-        const isMatch = bcrypt.compare(password, user.password);
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(400).json({ message: "Mot de passe incorrect" });
         }
@@ -75,7 +75,96 @@ async function loginUser(req, res) {
     }
 }
 
-export const logout = (req, res) => {
+
+export const getUser = (req, res)=>{
+    const user = req.session.user
+    console.log(user)
+    res.redirect("/")
+}
+
+export const modifierProfilSchema = z.object({
+    password:z.string().min(6).optional(), 
+    username:z.string(),
+    confirmPassword:z.string().min(6).optional(),
+    oldPassword:z.string().min(6).optional()
+    
+}).refine((data) => {
+    return data.password === data.confirmPassword || !data.password;
+  }, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"]
+
+}).refine(
+    (data) => !(data.oldPassword && !data.password),{
+        path:['password']
+    }
+    
+) 
+async function updateUserProfile(req, res) {
+    const userId = req.session.user ? req.session.user._id : null;
+    if (!userId) {
+        return res.redirect("/login")
+    }
+
+    const { currentpassword, password, confirmpassword } = req.body;
+
+    let errors = {};
+    let successMessage = undefined;
+
+
+    if (password && password !== confirmpassword) { 
+        errors.password = "Les mots de passe ne correspondent pas.";
+    }
+
+    const updateProfilData = { ...req.body, userId };
+
+    if (currentpassword) {
+        try {
+            const isOldPasswordValid = await verifyOldPassword(userId, currentpassword);
+            if (!isOldPasswordValid) {
+                errors.currentpassword = "L'ancien mot de passe est incorrect.";
+            }
+        } catch (error) {
+            errors.currentpassword = "Erreur lors de la vérification de l'ancien mot de passe.";
+        }
+    }
+
+    if (Object.keys(errors).length > 0) {
+        return res.render('profilUser', {
+            user: req.session.user,
+            errors: errors || [],
+            successMessage
+        });
+    }
+
+    try {
+        const result = await updateUserProfileService(updateProfilData);
+    
+        if (result.success) {
+            successMessage = "Profil mis à jour avec succès.";
+            return res.render('profilUser', {
+                user: req.session.user,
+                successMessage, 
+                errors:{}
+            });
+        }
+
+        return res.status(400).render('profilUser', {
+            user: req.session.user,
+            errors: { general: "Une erreur est survenue lors de la mise à jour." },
+            successMessage
+        });
+
+    } catch (error) {
+        return res.status(500).render('profilUser', {
+            user: req.session.user,
+            errors: { general: "Une erreur interne est survenue." },
+            successMessage
+        });
+    }
+}
+
+  export const logout = (req, res) => {
     req.session.destroy((err) => {
         if (err) {
             console.error(err);
@@ -85,59 +174,6 @@ export const logout = (req, res) => {
     });
 };
 
-export const getUser = (req, res)=>{
-    const user = req.session.user
-    console.log(user)
-    res.redirect("/")
-}
-
-export const modifierProfilSchema = z.object({
-    email:z.string().email(),
-    password:z.string().min(6),
-    contact:z.string().regex(/^[0-9]{10}$/),
-    username:z.string()
-})
-
-async function updateUserProfile(req, res) {
-    try {
-        const { username, email, password, contact } = req.body;
-
-        // Vérifier les champs obligatoires
-        if (!username || !email || !contact) {
-            return res.status(400).json({
-                message: "Les champs username, email et contact sont requis."
-            });
-        }
-
-        // Rechercher l'utilisateur dans la base de données
-        const user = await User.findOne({ username });
-        if (!user) {
-            return res.status(404).json({
-                message: "Utilisateur non trouvé."
-            });
-        }
-
-        // Mettre à jour les champs
-        user.email = email;
-        user.contact = contact;
-
-        if (password && password.trim()) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            user.password = hashedPassword;
-        }
-
-        await user.save();
-
-        return res.status(200).json({
-            message: "Profil mis à jour avec succès.",
-            user: { username: user.username, email: user.email, contact: user.contact }
-        });
-    } catch (error) {
-        return res.status(500).json({
-            message: "Échec de la mise à jour du profil.",
-            error: error.message
-        });
-    }
-}
+  
 
 export{registerUser,loginUser,updateUserProfile}

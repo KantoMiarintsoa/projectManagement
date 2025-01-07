@@ -1,18 +1,15 @@
-/* Reset styles */
-body, h2, form, input, textarea, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: b   order-box;
-  }
+
   
   body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
     display: flex;
-    justify-content: center;
     align-items: center;
-    min-height: 100vh;
     color: #333;
+    position: relative;
+    box-sizing: border-box;
+
+
   }
   
   .profile-container {
@@ -21,6 +18,8 @@ body, h2, form, input, textarea, button {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 400px;
+    justify-content: center;
+    margin:auto
   }
   
   h2 {
@@ -83,4 +82,20 @@ body, h2, form, input, textarea, button {
   .cancel-btn:hover {
     background-color: #c2362a;
   }
+  .error-message {
+    color: red; 
+    font-weight: bold; 
+    font-size: 0.8rem; 
+    margin-top: 5px; 
+    margin-bottom: 10px; 
+  }
+  .success-message {
+    color: green; 
+    font-weight: bold; 
+    font-size: 1rem; 
+    margin-top: 10px; 
+    margin-bottom: 20px;
+  }
+  
+  
   

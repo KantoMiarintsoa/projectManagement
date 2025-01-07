@@ -7,7 +7,7 @@ body, html {
     background-color: #f0f4f8;
     color: #333;
 }
-h1{
+h3{
     color: black;
 }
 
@@ -17,6 +17,8 @@ h1{
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    flex: 1;
+    gap: 2rem;
 }
 .topbar {
     width: 100%;
@@ -31,10 +33,9 @@ h1{
 /* Section Statistiques */
 .stats {
     display: flex;
-    gap: 20px;
+    gap: 30px;
     margin: 20px 0;
     width: 100%;
-    max-width: 1200px;
     justify-content: space-evenly;
 }
 

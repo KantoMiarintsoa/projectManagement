@@ -1,47 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/userProfil.css">
-  <title>User Profile</title>
-</head>
-<body>
-  <%- include('sidebar') %>
-  <div class="profile-container">
-    <h2>Profils</h2>
-    <% if (users && users.length > 0) { %>
-      <% users.forEach((user) => { %>
-        <form class="profile-form" action="/updateProfile" method="POST">
-          <div class="form-group">
-            <label for="username">Pseudo</label>
-            <input type="text" id="username" name="username" value="<%= user.username %>" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<%= user.email %>" required>
-          </div>
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" placeholder="Nouveau mot de passe">
-          </div>
-          <div class="form-group">
-            <label for="contact">Contact</label>
-            <input type="text" id="contact" name="contact" value="<%= user.contact %>" required>
-          </div>
-          <div class="form-group">
-            <label for="role">Rôle</label>
-            <input type="text" id="role" name="role" value="<%= user.role %>" readonly>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="save-btn">Sauvegarder</button>
-            <button type="reset" class="cancel-btn">Annuler</button>
-          </div>
-        </form>
-      <% }); %>
-    <% } else { %>
-      <p>Aucun utilisateur trouvé.</p>
-    <% } %>
-  </div>
-</body>
-</html>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/userProfil.css">
+        <title>User Profile</title>
+      </head>
+      <body>
+        <%- include('sidebar') %>
+        <div class="profile-container">
+          <h2>Infomation de profil</h2>
+          
+          <% if (successMessage) { %>
+            <p class="success-message"><%= successMessage %></p>
+          <% } %>
+          
+              <form class="profile-form" action="/auth/profil" method="POST">
+                <input type="hidden" name="userId" value="<%= user._id %>">
+                
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="<%= user.email || '' %>" disabled>
+        <% if (errors && errors.email) { %>
+            <p class="error-message"><%= errors.email %></p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Pseudo</label>
+        <input type="text" id="username" name="username" value="<%= user.username || '' %>" required>
+        <% if (errors && errors.username) { %>
+            <p class="error-message"><%= errors.username %></p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="currentpassword">Ancien mot de passe</label>
+        <input type="password" id="currentpassword" name="currentpassword" placeholder="Ancien mot de passe" minlength="6">
+        <% if (errors && errors.currentpassword) { %>
+            <p class="error-message"><%= errors.currentpassword %></p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" placeholder="Nouveau mot de passe" minlength="6">
+        <% if (errors && errors.password) { %>
+            <p class="error-message"><%= errors.password %></p>
+        <% } %>
+      </div>
+
+      <div>
+        <label for="confirmpassword">Confirmer</label>
+        <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirmation de mot de passe" minlength="6">
+        <% if (errors && errors.confirmpassword) { %>
+            <p class="error-message"><%= errors.confirmpassword %></p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="role">Rôle</label>
+        <input type="text" id="role" name="role" value="<%= user.role || '' %>" readonly>
+      </div>
+
+                
+                <!-- Form actions -->
+                <div class="form-actions">
+                  <button type="submit" class="save-btn">Sauvegarder</button>
+                  <button type="reset" class="cancel-btn">Annuler</button>
+                </div>
+              </form>
+        </div>
+      </body>
+      </html>

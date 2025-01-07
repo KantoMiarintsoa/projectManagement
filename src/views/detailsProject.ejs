@@ -5,249 +5,215 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Détail du Projet</title>
   <link rel="stylesheet" href="/css/detail_project.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-    .header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .main-container {
-      padding: 20px;
-    }
-
-    .add-task-btn {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .add-task-btn:hover {
-      background-color: #2980b9;
-    }
-
-    .tasks {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .task {
-      background-color: white;
-      border: 1px solid #ddd;
-      padding: 15px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .task:hover {
-      background-color: #f1f1f1;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      justify-content: center;
-      align-items: center;
-    }
-
-    .modal-content {
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 500px;
-      position: relative;
-    }
-    .add-task-btn, .invite-member-btn {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .add-task-btn:hover, .invite-member-btn:hover {
-      background-color: #2980b9;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      text-align: center;
-      line-height: 30px;
-      cursor: pointer;
-    }
-
-    .task-actions {
-      margin-top: 20px;
-    }
-
-    .task-actions button {
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      margin-right: 10px;
-      cursor: pointer;
-    }
-
-    .task-actions button:hover {
-      background-color: #1e8449;
-    }
-
-    .task-actions select,
-    .task-actions textarea {
-      width: 100%;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .comment-actions {
-      margin-top: 10px;
-      text-align: right;
-    }
-
-    .comment-actions button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 5px;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    .comment-actions button.cancel-btn {
-      background-color: #e74c3c;
-    }
-
-    .comment-actions button:hover {
-      opacity: 0.9;
-    }
-  </style>
 </head>
 <body>
-  <header class="header">
-    <h1>Nom du Projet : <span><%= project.title %></span></h1>
-  </header>
-  <main class="main-container">
-    <button class="invite-member-btn" onclick="openInviteMemberModal()">Inviter membre</button>
-    <button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
-    <ul class="tasks" id="taskList">
-      <% project.tasks.forEach((task, index)=> { %>
-        <li class="task" onclick="openTaskDetailModal('<%= task.name %>', '<%= task.description %>', '<%= task.dueDate %>')">
-          <h3 class="task-title"><%= task.name %></h3>
-          <p class="task-desc"><%= task.description %></p>
-          <span class="task-date">Échéance : <%= task.dueDate %></span>
-        </li>
-      <% }) %>
-    </ul>
-  </main>
-  <div class="modal" id="inviteMemberModal">
-    <!-- <form id="inviteMemberForm" action="/project/invitation" method="POST"> -->
-    <!-- verifeo oa le route fa tsy mifanaraka mintsy 
-     tsy misy /project/invitation zany ao fa enao kosae-->
-     <!-- router.post('/send', sendInvitationController); io no ao donc:-->
-    <form id="inviteMemberForm" action="/project/send" method="POST"></form>
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal('inviteMemberModal')">&times;</span>
-        <h2>Inviter un membre</h2>
-        <label for="memberEmail">Email du membre :</label>
-        <input type="email" id="memberEmail" name="email" required>
-        <button class="save-btn" type="submit">Envoyer l'invitation</button>
+  <%- include('sidebar') %>
+  <div class="wrapper">
+    <header class="header">
+      <h1>Nom du Projet : <span><%= project.title %></span></h1>
+      <div class="button-container">
+        <button class="top-button" onclick="openInviteMemberModal()">Ajouter membre</button>
+        <button class="top-button" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
+        <button class="top-button" onclick="openModal('viewMembersModal')">Afficher les membres</button>
       </div>
-    </form>
-  </div>  
-
-  <!-- Add Task Modal -->
-  <div class="modal" id="addTaskModal">
-    <!-- url /task/create
-    please verify route you use -->
-
-    <!-- <form id="addTaskForm" action="/task/create" method="POST"> -->
-    <form id="addTaskForm" action="/project/detail/<%= project._id %>/createTask" method="POST">
-      <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('addTaskModal')">&times;</span>
-      <h2>Ajouter une nouvelle tâche</h2>
-      <form id="taskForm">
-        <label for="taskTitle">Titre de la tâche</label>
-        <!-- name of the input must mutch what you wrote in the controller
-        your code doesn't
-        be clear and logic -->
-        <input type="text" id="taskTitle" name="name" required>
-
-        <label for="taskDesc">Description</label>
-        <textarea id="taskDesc" name="description" rows="3" required></textarea>
-
-        <label for="taskDate">Échéance</label>
-        <input type="date" id="taskDate" name="dueDate" required>
-
-        <button class="save-btn" id="saveTaskButton" type="submit">Ajouter</button>
+    </header>
+    <main class="main-container">
+      
+      
+      <ul class="tasks" id="taskList">
+        <% project.tasks.forEach((task, index)=> { %>
+          <li class="task" onclick="openTaskDetailModal('<%= task.name %>', '<%= task.description %>', '<%= task.dueDate %>', '<%=JSON.stringify(task.assigned_to)%>')">
+            <h3 class="task-title"><%= task.name %></h3>
+            <p class="task-desc"><%= task.description %></p>
+            <span class="task-date">Échéance : <%= task.dueDate %></span>
+            <button id="assignMemberBtn" class="view-members-btn" onclick="openAssignForm('<%=task._id %>')">Assigner un membre</button>
+          </li>
+        <% }) %>
+  
+        <% if (Array.isArray(project.users) && project.users.length > 0) { %>
+          <% project.users.forEach((user, index) => { %>
+            <li class="task" onclick="openTaskDetailModal('<%= user.email %>')">
+              <h3 class="task-title"><%= user.email %></h3>
+            </li>
+          <% }) %>
+        <% } %>
+      </ul>
+    </main>
+    <!-- <div class="modal" id="inviteMemberModal">
+      <form id="inviteMemberForm" action="/project/send" method="POST">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal('inviteMemberModal')">&times;</span>
+          <h2>Inviter un membre</h2>
+          <label for="memberEmail">Email du membre :</label>
+          <input type="email" id="memberEmail" name="recipientEmail" required>
+          <button class="save-btn" type="submit">Envoyer l'invitation</button>
+        </div>
+      </form>
+    </div> -->
+    <!-- Add Task Modal -->
+    <div class="modal" id="inviteMemberModal">
+      <form id="inviteMemberForm" action="/project/detail/<%= project._id %>/addMember" method="POST">
+        <div class="modal-content">
+          <span class="close-btn" onclick="closeModal('inviteMemberModal')">&times;</span>
+          <h2>Inviter un membre</h2>
+          <label for="memberEmail">Email du membre :</label>
+          <select id="memberEmail" name="email" required>
+            <option value="" disabled selected>Sélectionnez un email</option>
+                <% if (users && users.length > 0) { %>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.email %>"><%= user.email %></option>
+                    <% }) %>
+                <% } else { %>
+                    <option value="" disabled>Aucun email disponible</option>
+                <% } %>
+        </select>
+        
+            <button class="save-btn" type="submit">Ajout</button>
+        </div>
       </form>
     </div>
-  </form>
-  </div>
-
-  <!-- Task Detail Modal -->
-  <div class="modal" id="taskDetailModal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal('taskDetailModal')">&times;</span>
-      <h2 id="detailTitle">Détails de la tâche</h2>
-      <p id="detailDesc"></p>
-      <span id="detailDate"></span>
-
-      <div class="task-actions">
-        <button onclick="redirectToAssignPage()">Assigner membre</button>
-
-        <label for="taskStatus">Statut :</label>
-        <select id="taskStatus">
-          <option value="notStarted">Non commencé</option>
-          <option value="inProgress">En cours</option>
-          <option value="completed">Terminé</option>
-        </select>
-
-        <label for="taskComment">Commentaire :</label>
-        <textarea id="taskComment" rows="3" placeholder="Ajoutez un commentaire..."></textarea>
-
-        <div class="comment-actions">
-          <button class="cancel-btn" onclick="closeModal('taskDetailModal')">Annuler</button>
-          <button onclick="sendComment()">Envoyer</button>
+    
+    <div class="modal" id="addTaskModal">
+  
+      <form id="addTaskForm" action="/project/detail/<%= project._id %>/createTask" method="POST">
+        <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('addTaskModal')">&times;</span>
+        <h2>Ajouter une nouvelle tâche</h2>
+        <form id="taskForm">
+          <label for="taskTitle">Titre de la tâche</label>
+          <input type="text" id="taskTitle" name="name" required>
+  
+          <label for="taskDesc">Description</label>
+          <textarea id="taskDesc" name="description" rows="3" required></textarea>
+  
+          <label for="taskDate">Échéance</label>
+          <input type="date" id="taskDate" name="dueDate" required>
+  
+          <button class="save-btn" id="saveTaskButton" type="submit">Ajouter</button>
+        </form>
+      </div>
+    </form>
+    </div>
+  
+    <!-- Task Detail Modal -->
+    <div class="modal" id="taskDetailModal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('taskDetailModal')">&times;</span>
+        <h2 id="detailTitle">Détails de la tzâche</h2>
+        <p id="detailDesc"></p>
+        <span id="detailDate"></span>
+  
+        <div class="task-actions">
+          <h2 style="font-weight: bold; margin-bottom: 10px;">Membres assignés</h2>
+          <ul id="members-list">
+          </ul>
+      </div>
+      
+    
+    <div class="task-details">
+          <label for="taskStatus">Statut :</label>
+          <select id="taskStatus">
+            <option value="notStarted">Non commencé</option>
+            <option value="inProgress">En cours</option>
+            <option value="completed">Terminé</option>
+          </select>
+  
+          <label for="taskComment">Commentaire :</label>
+          <textarea id="taskComment" rows="3" placeholder="Ajoutez un commentaire..."></textarea>
+  
+          <div class="comment-actions">
+            <button class="cancel-btn" onclick="closeModal('taskDetailModal')">Annuler</button>
+            <button onclick="sendComment()">Envoyer</button>
+          </div>
         </div>
       </div>
     </div>
+  
+  
+  <div class="modal" id="viewMembersModal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal('viewMembersModal')">&times;</span>
+      <h2>Liste des membres</h2>
+      <div class="members" id="memberList">
+        <% if (Array.isArray(project.members) && project.members.length > 0) { %>
+          <form id="assignMembersForm" action="/project/detail/<%= project._id %>/assigneMember" method="POST">     
+            <input type="text" id="taskId" name="taskId" style="visibility: hidden;">
+            <table class="members-table">
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Sélectionner</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% project.members.forEach((member) => { %>
+                  <tr>
+                    <td><%= member.email %></td>
+                    <td>
+                      <input type="checkbox" name="selectedMembers"  value="<%= member.email %>" />
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody> 
+            </table>
+            <div class="form-actions">
+              <button class="button-blue" type="submit" onclick="assignSelectedMembers()" id="assign-btn">Assigner</button>
+            </div>
+          </form>
+        <% } else { %>
+          <p>Aucun membre trouvé.</p>  
+        <% } %>
+      </div>
+    </div>
+  </div>
+  
   </div>
 
   <script>
+function toggleAssignButton(state) {
+  const assignButton = document.querySelector('#assign-btn');
+  if (assignButton) {
+    console.log(state)
+    assignButton.disabled = state;
+    assignButton.style.opacity = state ? '0.6' : '1'; 
+    assignButton.style.cursor = state ? 'not-allowed' : 'pointer';
+
+    console.log(assignButton)
+  }
+}
+
+// document.getElementsByClassName('assignMemberBtn').addEventListener('click', function () {
+//   toggleAssignButton(false); 
+// });
+
+document.querySelector('.view-members-btn').addEventListener('click', function () {
+  toggleAssignButton(false); // Désactiver le bouton
+});
+
+//ouvrir modal assigner membre
+const openAssignForm = (taskId) => {
+    // changer la valeur de l'id
+    document.getElementById("taskId").value=taskId;
+    openModal('viewMembersModal');
+};
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
     // Ouvrir un modal spécifique
     function openModal(modalId) {
       document.getElementById(modalId).style.display = 'flex';
@@ -263,16 +229,32 @@
     }
 
 
-    // Ouvrir le modal d'ajout de tâche
+    // modal ajout tache
     function openAddTaskModal() {
       openModal('addTaskModal');
     }
 
-    // Ouvrir le modal de détail d'une tâche
-    function openTaskDetailModal(title, desc, date) {
+    // detail tached
+    function openTaskDetailModal(title, desc, date, assignedTo) {
       document.getElementById('detailTitle').innerText = title;
       document.getElementById('detailDesc').innerText = desc;
       document.getElementById('detailDate').innerText = `Échéance : ${date}`;
+      const listAssignements = document.getElementById("members-list");
+      listAssignements.innerHTML="";
+      const assignements=JSON.parse(assignedTo);
+
+      if(assignements.length===0){
+        listAssignements.innerHTML=`
+          <p>Aucun membre assigné</p>
+        `
+      }
+      assignements.forEach(member=>{
+        const data=`
+          <li>${member.email}</li>
+        `
+        listAssignements.innerHTML+=data;
+      });
+
       openModal('taskDetailModal');
     }
 
@@ -292,6 +274,40 @@
         alert('Veuillez ajouter un commentaire avant d\'envoyer.');
       }
     }
+
+    // Ouvrir le modal de la liste des membres
+function openModal(modalId) {
+  document.getElementById(modalId).style.display = 'flex';
+}
+
+// Fermer un modal spécifique
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = 'none';
+}
+
+function showTaskMembers(taskId, membersEmails) {
+    const memberList = document.getElementById('members-list');
+
+    memberList.innerHTML = '';
+
+    if (membersEmails.trim()) { 
+        const membersArray = membersEmails.split(','); 
+        membersArray.forEach(email => {
+            const listItem = document.createElement('li');
+            listItem.textContent = email.trim(); 
+            memberList.appendChild(listItem);
+        });
+    } else {
+        const noMemberMessage = document.createElement('p');
+        noMemberMessage.textContent = 'Aucun membre assigné pour le moment.';
+        memberList.appendChild(noMemberMessage);
+    }
+}
+
+
+
+
+
   </script>
 </body>
 </html>

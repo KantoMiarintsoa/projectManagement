@@ -7,6 +7,6 @@ const router = Router()
 router.post('/register', validateData(registerSchema), registerUser)
 router.post('/login', validateData(loginSchema),loginUser)
 router.get("/test", getUser)
-router.get("/profil",validateData(modifierProfilSchema),updateUserProfile)
+router.post("/profil",validateData(modifierProfilSchema, false),updateUserProfile)
 
 export default router

@@ -26,15 +26,14 @@ const taskSchema=new mongoose.Schema(
             type:Schema.Types.ObjectId,
             ref:"User"
         },
-        // we can use other structure
-        // because it's mongodb, i will create an array of tasks in project model
-        // project: { type: Schema.Types.ObjectId, ref: 'Project' }, 
-        
-        // you forgot the dueDate
         dueDate:{
             type: Date
-        }
+        },
+
+        
     }
+
+    
 )
 
 const Task=mongoose.model("Task",taskSchema)

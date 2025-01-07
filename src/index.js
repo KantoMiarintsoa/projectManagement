@@ -51,6 +51,7 @@ app.use("/project",projectRouter)
 // use only one
 // i will use only the project
 app.use("/task",taskRouter)
+app.use(express.urlencoded({ extended: true }));
 
 const noAuth=[
   "/login","/register","/auth/login", "/auth/register"
